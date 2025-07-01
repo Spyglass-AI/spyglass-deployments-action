@@ -1,0 +1,5 @@
+name: 'Spyglass Deployments'
+description: 'Update Spyglass AI Deployments'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'

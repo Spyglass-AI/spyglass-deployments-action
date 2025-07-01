@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  spyglass-deployments:
+    runs-on: ubuntu-latest
+    name: Update Spyglass Deployments
+    steps:
+      # Checkout the repo
+      - name: Checkout
+        uses: actions/checkout@v4
+      # Update the Spyglass Deployment associated with DEPLOYMENT_ID
+      # by reading the model.yaml file in the root of the repo and using
+      # your SPYGLASS_API_KEY from the repo secrets
+      - name: Update Spyglass Deployments
+        uses: spyglass-ai/spyglass-deployments-action@v1
+        env:
+          SPYGLASS_API_KEY: ${{ secrets.SPYGLASS_API_KEY }}
+          DEPLOYMENT_ID: 'example-id'
