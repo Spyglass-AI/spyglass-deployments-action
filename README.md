@@ -1,14 +1,14 @@
-# spyglass-deployments-action
+# Spyglass AI Deployments GitHub Action
 
-A GitHub Action for updating your Spyglass AI Deployments automatically based on your model configuration.
+A GitHub Action for updating your Spyglass AI Deployments dashboard automatically based on the model configuration in your repo.
 
 ## Overview
 
-This GitHub Action reads your AI model configuration from a `model.yaml` file in your repository and updates the corresponding deployment in Spyglass. It's designed to keep your Spyglass deployments in sync with your codebase changes.
+This GitHub Action reads your model configuration from a `model.yaml` file in your repository and updates the corresponding deployment in the Spyglass AI platform.
 
 ## Quick Start
 
-1. **Add to your workflow**: Create or update `.github/workflows/spyglass-deploy.yml`
+**Add to your workflow**: Create or update `.github/workflows/spyglass-deploy.yml` in your repo with this template. Fill in your `DEPLOYMENT_ID`, this should match the `DEPLOYMENT_ID` you use with the Spyglass SDK to send telemetry to the platform.
 
 ```yaml
 name: Update Spyglass Deployment
@@ -33,7 +33,7 @@ jobs:
           DEPLOYMENT_ID: 'your-deployment-id'
 ```
 
-2. **Create model.yaml**: Add a `model.yaml` file to your repository root:
+**Create model.yaml**: Add a `model.yaml` file to your repository root:
 
 ```yaml
 # Human-readable name for the deployment
@@ -49,90 +49,14 @@ prompt: |
   Always be polite and professional in your responses.
 ```
 
-3. **Configure secrets**: Add your `SPYGLASS_API_KEY` to your repository secrets
-
-## Configuration
-
-### Environment Variables
-
-| Variable | Required | Description | Default |
-|----------|----------|-------------|---------|
-| `SPYGLASS_API_KEY` | Yes | Your Spyglass API authentication token | - |
-| `DEPLOYMENT_ID` | Yes | The ID of the deployment to update | - |
-| `SPYGLASS_API_BASE_URL` | No | Base URL for the Spyglass API | `http://localhost:4000` |
-
-### Model Configuration (`model.yaml`)
-
-| Field | Required | Description |
-|-------|----------|-------------|
-| `model` | Yes | The AI model identifier (should match your OpenAI client config) |
-| `prompt` | Yes | The system prompt for your AI model |
-| `name` | No | Human-readable name for the deployment |
-| `description` | No | Description of the deployment's purpose |
-
-## Advanced Usage
-
-### Multiple Deployments
-
-You can run the action multiple times for different deployments:
-
-```yaml
-jobs:
-  deploy-production:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Update Production Deployment
-        uses: spyglass-ai/spyglass-deployments-action@v1
-        env:
-          SPYGLASS_API_KEY: ${{ secrets.SPYGLASS_API_KEY }}
-          DEPLOYMENT_ID: 'prod-api-v1'
-          
-  deploy-staging:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Update Staging Deployment
-        uses: spyglass-ai/spyglass-deployments-action@v1
-        env:
-          SPYGLASS_API_KEY: ${{ secrets.SPYGLASS_API_KEY }}
-          DEPLOYMENT_ID: 'staging-api-v1'
-```
-
-### Custom Model File Location
-
-By default, the action looks for `model.yaml` in the repository root. You can specify a different location by modifying the Python script in your fork.
-
-### Production API Endpoint
-
-For production use, set the `SPYGLASS_API_BASE_URL` environment variable:
-
-```yaml
-env:
-  SPYGLASS_API_KEY: ${{ secrets.SPYGLASS_API_KEY }}
-  DEPLOYMENT_ID: 'your-deployment-id'
-  SPYGLASS_API_BASE_URL: 'https://api.spyglass.ai'
-```
-
-## Getting Your API Key
-
+**Configure your API Key secret**:
 1. Log in to your Spyglass dashboard
-2. Navigate to Settings > API Keys
+2. Navigate to Account > API Keys
 3. Generate a new API key
 4. Add it to your repository secrets as `SPYGLASS_API_KEY`
-
-## Getting Your Deployment ID
-
-1. Go to your Spyglass dashboard
-2. Navigate to the Deployments section
-3. Copy the deployment ID from the deployment you want to update
-
-## Development
-
-See the [Python script README](./spyglass-deployment-action/README.md) for details on developing and testing the underlying script.
 
 ## Support
 
 For issues with this GitHub Action, please [open an issue](https://github.com/spyglass-ai/spyglass-deployments-action/issues) in this repository.
 
-For Spyglass platform support, contact [support@spyglass.ai](mailto:support@spyglass.ai).
+For Spyglass AI platform support, contact [team@spyglass.ai](mailto:team@spyglass.ai).

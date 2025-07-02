@@ -60,8 +60,7 @@ def get_environment_variables() -> Dict[str, str]:
         print("Error: DEPLOYMENT_ID environment variable is required")
         sys.exit(1)
     
-    # TODO: Make this our prod URL by default
-    api_base_url = os.getenv("SPYGLASS_API_BASE_URL", "http://localhost:4000")
+    api_base_url = os.getenv("SPYGLASS_API_BASE_URL", "https://api.spyglass-ai.com")
     
     return {
         "api_key": api_key,
@@ -149,6 +148,19 @@ def update_spyglass_deployment(env_vars: Dict[str, str], model_config: Dict[str,
                     pass  # Ignore JSON parsing errors for response data
                 
                 return  # Success - exit the function
+                
+            elif response.status_code in (401, 403):
+                # Authentication/authorization error - don't retry
+                print(f"❌ Authentication failed: Invalid API key")
+                print(f"   Status: {response.status_code}")
+                try:
+                    error_data = response.json()
+                    if "error" in error_data:
+                        print(f"   Server message: {error_data['error']}")
+                except:
+                    print(f"   Response: {response.text}")
+                print("   Please check that your SPYGLASS_API_KEY is valid and has the necessary permissions.")
+                sys.exit(1)
                 
             else:
                 print(f"❌ API error on attempt {attempt + 1}: Status {response.status_code}")
