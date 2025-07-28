@@ -26,11 +26,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Update Spyglass Deployments
-        uses: spyglass-ai/spyglass-deployments-action@v1
-        env:
-          SPYGLASS_API_KEY: ${{ secrets.SPYGLASS_API_KEY }}
-          DEPLOYMENT_ID: 'your-deployment-id'
+              - name: Update Spyglass Deployments
+          uses: spyglass-ai/spyglass-deployments-action@v1
+          with:
+            API_KEY: ${{ secrets.SPYGLASS_API_KEY }}
+            DEPLOYMENT_ID: 'your-deployment-id'
+            # Optional: specify custom path to model.yaml (defaults to 'model.yaml')
+            # MODEL_FILE_PATH: 'path/to/your/model.yaml'
 ```
 
 **Create model.yaml**: Add a `model.yaml` file to your repository root:
@@ -54,6 +56,35 @@ prompt: |
 2. Navigate to Account > API Keys
 3. Generate a new API key
 4. Add it to your repository secrets as `SPYGLASS_API_KEY`
+
+## Action Inputs
+
+| Input | Description | Required | Default |
+|-------|-------------|----------|---------|
+| `API_KEY` | Your Spyglass API key | ✅ Yes | - |
+| `DEPLOYMENT_ID` | Deployment ID to update (should match your SDK configuration) | ✅ Yes | - |
+| `MODEL_FILE_PATH` | Path to model.yaml file relative to repository root | ❌ No | `model.yaml` |
+
+## Examples
+
+### Standard Usage (model.yaml in repository root)
+```yaml
+- name: Update Spyglass Deployments
+  uses: spyglass-ai/spyglass-deployments-action@v1
+  with:
+    API_KEY: ${{ secrets.SPYGLASS_API_KEY }}
+    DEPLOYMENT_ID: 'production-api'
+```
+
+### Custom model.yaml Location
+```yaml
+- name: Update Spyglass Deployments
+  uses: spyglass-ai/spyglass-deployments-action@v1
+  with:
+    API_KEY: ${{ secrets.SPYGLASS_API_KEY }}
+    DEPLOYMENT_ID: 'production-api'
+    MODEL_FILE_PATH: 'config/model.yaml'
+```
 
 ## Support
 

@@ -34,6 +34,10 @@ The script requires the following environment variables:
 - `SPYGLASS_API_KEY`: Your Spyglass API authentication token
 - `DEPLOYMENT_ID`: The ID of the deployment to update
 
+### Optional
+- `MODEL_FILE_PATH`: Path to the model.yaml file (default: "model.yaml")
+- `SPYGLASS_API_BASE_URL`: Custom API base URL (default: "https://api.spyglass-ai.com")
+
 ## Running the Script
 
 ### Using uv
@@ -42,6 +46,9 @@ The script requires the following environment variables:
 # Set environment variables
 export SPYGLASS_API_KEY="your-api-key"
 export DEPLOYMENT_ID="your-deployment-id"
+
+# Optional: set custom model file path
+export MODEL_FILE_PATH="config/model.yaml"
 
 # Run with uv
 uv run python main.py

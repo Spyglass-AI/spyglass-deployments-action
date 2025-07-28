@@ -6,7 +6,7 @@ import requests
 from typing import Dict, Any
 
 
-def load_model_config(config_path: str = "model.yaml") -> Dict[str, Any]:
+def load_model_config(config_path: str) -> Dict[str, Any]:
     """
     Load model configuration from YAML file.
     
@@ -51,6 +51,7 @@ def get_environment_variables() -> Dict[str, str]:
     """
     api_key = os.getenv("SPYGLASS_API_KEY")
     deployment_id = os.getenv("DEPLOYMENT_ID")
+    model_file_path = os.getenv("MODEL_FILE_PATH", "model.yaml")
     
     if not api_key:
         print("Error: SPYGLASS_API_KEY environment variable is required")
@@ -65,7 +66,8 @@ def get_environment_variables() -> Dict[str, str]:
     return {
         "api_key": api_key,
         "deployment_id": deployment_id,
-        "api_base_url": api_base_url
+        "api_base_url": api_base_url,
+        "model_file_path": model_file_path
     }
 
 
@@ -202,7 +204,8 @@ def main():
     env_vars = get_environment_variables()
     
     # Load model configuration
-    model_config = load_model_config()
+    print(f"📄 Loading model configuration from: {env_vars['model_file_path']}")
+    model_config = load_model_config(env_vars['model_file_path'])
     
     # Update the deployment
     update_spyglass_deployment(env_vars, model_config)
