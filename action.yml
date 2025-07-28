@@ -1,20 +1,5 @@
 name: 'Spyglass Deployments'
 description: 'Update Spyglass AI Deployments'
-inputs:
-  API_KEY:
-    description: 'Spyglass API Key'
-    required: true
-  DEPLOYMENT_ID:
-    description: 'Deployment ID to update'
-    required: true
-  MODEL_FILE_PATH:
-    description: 'Path to the model.yaml file relative to repository root'
-    required: false
-    default: 'model.yaml'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  env:
-    SPYGLASS_API_KEY: ${{ inputs.API_KEY }}
-    DEPLOYMENT_ID: ${{ inputs.DEPLOYMENT_ID }}
-    MODEL_FILE_PATH: ${{ inputs.MODEL_FILE_PATH }}

@@ -16,8 +16,8 @@ jobs:
       # your SPYGLASS_API_KEY from the repo secrets
       - name: Update Spyglass Deployments
         uses: spyglass-ai/spyglass-deployments-action@v1
-        with:
-          API_KEY: ${{ secrets.SPYGLASS_API_KEY }}
+        env:
+          SPYGLASS_API_KEY: ${{ secrets.SPYGLASS_API_KEY }}
           DEPLOYMENT_ID: 'example-id'
           # Optional: specify custom path to model.yaml
           # MODEL_FILE_PATH: 'path/to/model.yaml'

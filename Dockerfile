@@ -13,5 +13,5 @@ COPY spyglass-deployment-action/ .
 # Install dependencies using uv
 RUN uv sync --frozen
 
-# Set the entrypoint to run the main script from the app directory
-ENTRYPOINT ["sh", "-c", "cd /app && uv run python main.py"]
+# Set the entrypoint to run the main script
+ENTRYPOINT ["uv", "run", "python", "main.py"]
