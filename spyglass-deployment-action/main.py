@@ -20,8 +20,34 @@ def load_model_config(config_path: str) -> Dict[str, Any]:
         FileNotFoundError: If model.yaml doesn't exist
         yaml.YAMLError: If YAML is invalid
     """
+    import os
+    
+    # Try multiple potential paths for the config file
+    potential_paths = [
+        config_path,  # Original path
+        os.path.join("/github/workspace", config_path),  # GitHub Actions workspace
+        os.path.join(os.getcwd(), config_path),  # Current directory
+    ]
+    
+    # If we're in a GitHub Actions environment, also try the workspace directly
+    if os.getenv("GITHUB_WORKSPACE"):
+        potential_paths.append(os.path.join(os.getenv("GITHUB_WORKSPACE"), config_path))
+    
+    config_file_path = None
+    for path in potential_paths:
+        if os.path.exists(path):
+            config_file_path = path
+            print(f"🔍 Found config file at: {config_file_path}")
+            break
+        else:
+            print(f"🔍 Tried path: {path} (not found)")
+    
+    if not config_file_path:
+        print(f"❌ Could not find config file. Tried paths: {potential_paths}")
+        raise FileNotFoundError(f"Config file not found at any of: {potential_paths}")
+    
     try:
-        with open(config_path, 'r', encoding='utf-8') as file:
+        with open(config_file_path, 'r', encoding='utf-8') as file:
             config = yaml.safe_load(file)
             
         if not isinstance(config, dict):
@@ -29,7 +55,12 @@ def load_model_config(config_path: str) -> Dict[str, Any]:
             
         return config
     except FileNotFoundError:
+        import os
+        current_dir = os.getcwd()
+        files_in_dir = os.listdir(current_dir)
         print(f"Error: {config_path} not found in the current directory")
+        print(f"Current working directory: {current_dir}")
+        print(f"Files in current directory: {files_in_dir}")
         sys.exit(1)
     except yaml.YAMLError as e:
         print(f"Error parsing YAML file: {e}")
