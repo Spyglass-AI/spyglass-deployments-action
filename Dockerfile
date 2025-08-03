@@ -14,4 +14,6 @@ COPY spyglass-deployment-action/ .
 RUN uv sync --frozen
 
 # Set the entrypoint to run the main script with absolute path
+# Change working directory to where GitHub Actions mounts the repository
+WORKDIR /github/workspace
 ENTRYPOINT ["uv", "run", "--directory", "/app", "python", "main.py"]
